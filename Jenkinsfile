@@ -22,7 +22,7 @@ pipeline {
     stage('package') {
       steps {
         runMATLABCommand 'openProject(\'CruiseControlExample.prj\'), generateXMLFromLogs(\'crs_controller\'), generateHTMLReport(\'crs_controller\'), deleteLogs'
-        archiveArtifacts artifacts: './Design/crs_controller/pipeline/analyze/**/*.*, ./Code/codegen/crs_controller_ert_rtw**/*.*'
+        archiveArtifacts artifacts: 'Design/crs_controller/pipeline/analyze/**/*.*, Code/codegen/crs_controller_ert_rtw**/*.*'
       }
     }
 
