@@ -35,29 +35,29 @@ pipeline {
       }
     }
 
-    stage('TargetSpeedThrottle_test') {
+    stage('DriverSwRequest_test') {
       agent any
       
       stages {
         stage('verify') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleModelAdvisor'
+            runMATLABCommand 'openProject(${projectname}), DriverSwRequestModelAdvisor'
           }
         }
         stage('build') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleBuild'
+            runMATLABCommand 'openProject(${projectname}), DriverSwRequestBuild'
           }
         }
         stage('test') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleTestFile'
+            runMATLABCommand 'openProject(${projectname}), DriverSwRequestTest'
           }
         }
         stage('package') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'TargetSpeedThrottle\'), generateHTMLReport(\'TargetSpeedThrottle\'), deleteLogs'
-            archiveArtifacts artifacts: 'Design/TargetSpeedThrottle/pipeline/analyze/**/*.*, Code/codegen/TargetSpeedThrottle_ert_rtw**/*.*', fingerprint: true
+            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'DriverSwRequest\'), generateHTMLReport(\'DriverSwRequest\'), deleteLogs'
+            archiveArtifacts artifacts: 'Design/DriverSwRequest/pipeline/analyze/**/*.*, Code/codegen/DriverSwRequest_ert_rtw**/*.*', fingerprint: true
           }
         }
       }
