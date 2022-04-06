@@ -27,9 +27,7 @@ pipeline {
         }
       }
     }
-  }
 
-  stages {
     stage('driverSW_test') {
       stage('verify') {
         steps {
