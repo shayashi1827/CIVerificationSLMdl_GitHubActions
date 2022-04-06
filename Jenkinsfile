@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    projectname = "CruiseControlExample.prj"
+    projectname = "\'CruiseControlExample.prj\'"
   }
   stages {
     stage('verify') {
