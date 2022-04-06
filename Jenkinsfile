@@ -1,8 +1,8 @@
-def projectname = "CruiseControlExample.prj"
-def mdl_list = ["crs_controller","driverSwRequest"]
-
 pipeline {
   agent any
+  environment {
+    projectname = "CruiseControlExample.prj"
+  }
   stages {
     stage('verify') {
       steps {
