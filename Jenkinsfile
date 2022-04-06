@@ -8,11 +8,11 @@ pipeline {
       agent any
       
       stages {
-        //stage('verify') {
-        //  steps {
-        //    runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
-        //  }
-        //}
+        stage('verify') {
+          steps {
+            runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
+          }
+        }
         stage('build') {
             steps {
             runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
@@ -36,11 +36,11 @@ pipeline {
       agent any
       
       stages {
-        //stage('verify') {
-        //  steps {
-        //    runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleModelAdvisor'
-        //  }
-        //}
+        stage('verify') {
+          steps {
+            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleModelAdvisor'
+          }
+        }
         stage('build') {
           steps {
             runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleBuild'
