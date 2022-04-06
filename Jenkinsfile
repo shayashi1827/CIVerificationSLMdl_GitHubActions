@@ -8,11 +8,11 @@ pipeline {
       agent any
       
       stages {
-        stage('verify') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
-          }
-        }
+        //stage('verify') {
+        //  steps {
+        //    runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
+        //  }
+        //}
         stage('build') {
             steps {
             runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
@@ -32,29 +32,29 @@ pipeline {
       }
     }
 
-    stage('driverSW_test') {
+    stage('TargetSpeedThrottle_test') {
       agent any
       
       stages {
-        stage('verify') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestModelAdvisor'
-          }
-        }
+        //stage('verify') {
+        //  steps {
+        //    runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleModelAdvisor'
+        //  }
+        //}
         stage('build') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestBuild'
+            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleBuild'
           }
         }
         stage('test') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestTestFile'
+            runMATLABCommand 'openProject(${projectname}), TargetSpeedThrottleTestFile'
           }
         }
         stage('package') {
           steps {
-            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'DriverSwRequest\'), generateHTMLReport(\'DriverSwRequest\'), deleteLogs'
-            archiveArtifacts artifacts: 'Design/DriverSwRequest/pipeline/analyze/**/*.*, Code/codegen/DriverSwRequest_ert_rtw**/*.*', fingerprint: true
+            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'TargetSpeedThrottle\'), generateHTMLReport(\'TargetSpeedThrottle\'), deleteLogs'
+            archiveArtifacts artifacts: 'Design/TargetSpeedThrottle/pipeline/analyze/**/*.*, Code/codegen/TargetSpeedThrottle_ert_rtw**/*.*', fingerprint: true
           }
         }
       }
