@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  tools {
+       matlab 'R2021a'
+   }
   environment {
     projectname = "\'CruiseControlExample.prj\'"
   }
