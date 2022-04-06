@@ -4,7 +4,7 @@ pipeline {
     projectname = "\'CruiseControlExample.prj\'"
   }
   stages {
-    stage('crs_controller_test') {
+    stages('crs_controller_test') {
       stage('verify') {
         agent any
         steps {
@@ -32,7 +32,7 @@ pipeline {
       }
     }
 
-    stage('driverSW_test') {
+    stages('driverSW_test') {
       stage('verify') {
         agent any
         steps {
