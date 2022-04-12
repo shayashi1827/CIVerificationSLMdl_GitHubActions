@@ -7,9 +7,10 @@ pipeline {
     projectname = "\'CruiseControlExample.prj\'"
   }
   stages {
+    parallel(
     stage('crs_controller_test') {
       agent any
-      
+
       stages {
         stage('verify') {
           steps {
@@ -62,5 +63,6 @@ pipeline {
         }
       }
     }
+    )
   }
 }
