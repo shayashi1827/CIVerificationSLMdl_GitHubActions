@@ -8,7 +8,11 @@ pipeline {
   }
   stages {
     stage('verify') {
-      agent any
+      agent {
+        node {
+          customWorkspace 'workspace/verify'
+        }
+      }
       steps {
         parallel (
           "crs_controller" : {
@@ -22,7 +26,11 @@ pipeline {
     }
     
     stage('build') {
-      agent any
+      agent {
+        node {
+          customWorkspace 'workspace/build'
+        }
+      }
       steps {
         parallel (
           "crs_controller" : {
