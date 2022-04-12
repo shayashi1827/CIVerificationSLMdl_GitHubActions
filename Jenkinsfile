@@ -7,62 +7,32 @@ pipeline {
     projectname = "\'CruiseControlExample.prj\'"
   }
   stages {
-    parallel(
-    stage('crs_controller_test') {
+    stage('verify') {
       agent any
-
-      stages {
-        stage('verify') {
-          steps {
+      steps {
+        parallel (
+          "crs_controller" : {
             runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
+          },
+          "DriverSwRequest" : {
+          runMATLABCommand 'openProject(${projectname}), DriverSwRequestModelAdvisor'
           }
-        }
-        stage('build') {
-            steps {
-            runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
-          }
-        }
-        stage('test') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), crs_controllerTestFile'
-          }
-        }
-        stage('package') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'crs_controller\'), generateHTMLReport(\'crs_controller\'), deleteLogs'
-            archiveArtifacts artifacts: 'Design/crs_controller/pipeline/analyze/**/*.*, Code/codegen/crs_controller_ert_rtw**/*.*', fingerprint: true
-          }
-        }
+        )
       }
     }
-    ,
-    stage('DriverSwRequest_test') {
+    
+    stage('build') {
       agent any
-      
-      stages {
-        stage('verify') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestModelAdvisor'
-          }
-        }
-        stage('build') {
-          steps {
+      steps {
+        parallel (
+          "crs_controller" : {
+            runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
+          },
+          "DriverSwRequest" : {
             runMATLABCommand 'openProject(${projectname}), DriverSwRequestBuild'
           }
-        }
-        stage('test') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestTest'
-          }
-        }
-        stage('package') {
-          steps {
-            runMATLABCommand 'openProject(${projectname}), generateXMLFromLogs(\'DriverSwRequest\'), generateHTMLReport(\'DriverSwRequest\'), deleteLogs'
-            archiveArtifacts artifacts: 'Design/DriverSwRequest/pipeline/analyze/**/*.*, Code/codegen/DriverSwRequest_ert_rtw**/*.*', fingerprint: true
-          }
-        }
+        )
       }
     }
-    )
   }
 }
