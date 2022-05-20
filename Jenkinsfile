@@ -21,7 +21,7 @@ pipeline {
     stage('package') {
       steps {
             //runMATLABCommand 'openProject(${projectname}),  generateXMLFromLogs(${mdlname});, generateHTMLReport(${mdlname});'
-            archiveArtifacts artifacts: './Design/crs_controller/pipeline/analyze/**/*, ./Code/codegen/crs_controller_ert_rtw',
+            archiveArtifacts artifacts: './Design/crs_controller/pipeline/analyze/**/*, ./Code/codegen/crs_controller_ert_rtw/**/*',
                                onlyIfSuccessful: true
       }
     }
