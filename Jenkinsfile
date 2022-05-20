@@ -13,13 +13,11 @@ pipeline {
             runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
       }
     }
-    /*
     stage('build') {
       steps {
             runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
       }
     }
-    */
     stage('package') {
       steps {
             //runMATLABCommand 'openProject(${projectname}),  generateXMLFromLogs(${mdlname});, generateHTMLReport(${mdlname});'
