@@ -5,41 +5,24 @@ pipeline {
    }
   environment {
     projectname = "\'CruiseControlExample.prj\'"
+    mdlname = "\'crs_controller\'"
   }
   stages {
     stage('verify') {
-      agent {
-        node {
-          customWorkspace 'workspace/verify'
-        }
-      }
       steps {
-        parallel (
-          "crs_controller" : {
             runMATLABCommand 'openProject(${projectname}), crs_controllerModelAdvisor'
-          },
-          "DriverSwRequest" : {
-          runMATLABCommand 'openProject(${projectname}), DriverSwRequestModelAdvisor'
-          }
-        )
+      }
+    }    
+    stage('build') {
+      steps {
+            runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
       }
     }
-    
-    stage('build') {
-      agent {
-        node {
-          customWorkspace 'workspace/build'
-        }
-      }
+    stage('package') {
       steps {
-        parallel (
-          "crs_controller" : {
-            runMATLABCommand 'openProject(${projectname}), crs_controllerBuild'
-          },
-          "DriverSwRequest" : {
-            runMATLABCommand 'openProject(${projectname}), DriverSwRequestBuild'
-          }
-        )
+            runMATLABCommand 'openProject(${projectname}),  generateXMLFromLogs(${mdlname});, generateHTMLReport(${mdlname});'
+            archiveArtifacts artifacts: './Design/crs_controller/pipeline/analyze/**/*, ./Code/codegen/crs_controller_ert_rtw',
+                               onlyIfSuccessful: true
       }
     }
   }
