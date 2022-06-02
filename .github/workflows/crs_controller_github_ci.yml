@@ -1,0 +1,77 @@
+#Copyright 2022 The MathWorks, Inc.
+
+name: Model verification example for the crs_controller model
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: [ develop_* ]
+    paths:
+      - 'Design/crs_controller/**/*'
+      - '.github/workflows/crs_controller_github_ci.yml'
+      - 'tools/**/*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  PROJECTNAME: Trial.prj
+  LOGS_PATH: ./Code
+  ARTIFACTS_NAME: crs_controller_ci_artifacts
+  ARTIFACTS_DOWNLOAD_BASE_PATH: C:/Temp/Downloads/crs_controller
+
+jobs:
+  setup:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+  verify:
+    runs-on: self-hosted
+    needs: [setup]
+    steps:
+      - name: Run ModelAdvisor
+        uses: matlab-actions/run-command@v1
+        with:
+          command: openProject('${{ env.PROJECTNAME }}');, crs_controllerModelAdvisor;
+
+  build:
+    runs-on: self-hosted
+    needs: [setup]
+    steps:
+      - name: Code Generation
+        uses: matlab-actions/run-command@v1
+        with:
+          command: openProject('${{ env.PROJECTNAME }}');, crs_controllerBuild;
+
+  testing:
+    runs-on: self-hosted
+    needs: [setup]
+    steps:
+      - name: unit test
+        uses: matlab-actions/run-command@v1
+        with:
+          command: openProject('${{ env.PROJECTNAME }}');, crs_controllerTestFile;
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v2
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: './Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml'
+
+  package:
+    runs-on: self-hosted
+    needs: [verify,build,testing]
+    steps:
+      - name: package artifacts
+        uses: matlab-actions/run-command@v1
+        with:
+          command: openProject('${{ env.PROJECTNAME }}');, generateXMLFromLogs('crs_controller');, generateHTMLReport('crs_controller');
+      - name: Archive results
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACTS_NAME }}
+          path: |
+            ./Design/crs_controller/pipeline/analyze/**/*
+            ./Code/codegen/crs_controller_ert_rtw
