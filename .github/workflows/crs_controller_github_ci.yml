@@ -26,10 +26,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.8
 
   verify:
     runs-on: self-hosted
@@ -48,11 +44,11 @@ jobs:
         uses: matlab-actions/run-command@v1
         with:
           command: openProject('${{ env.PROJECTNAME }}');, crs_controllerTestFile;
-      - name: Publish Test Results
-        uses: EnricoMi/Publish-unit-test-result-action/composite@v1
-        if: always()
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
         with:
-          files: "./Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml"
+          report_paths: './Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml'
 
   build:
     runs-on: self-hosted
