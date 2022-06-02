@@ -26,6 +26,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
 
   verify:
     runs-on: self-hosted
