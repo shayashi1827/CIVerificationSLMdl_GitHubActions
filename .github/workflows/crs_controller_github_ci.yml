@@ -35,16 +35,7 @@ jobs:
         uses: matlab-actions/run-command@v1
         with:
           command: openProject('${{ env.PROJECTNAME }}');, crs_controllerModelAdvisor;
-
-  build:
-    runs-on: self-hosted
-    needs: [setup]
-    steps:
-      - name: Code Generation
-        uses: matlab-actions/run-command@v1
-        with:
-          command: openProject('${{ env.PROJECTNAME }}');, crs_controllerBuild;
-
+  
   testing:
     runs-on: self-hosted
     needs: [setup]
@@ -53,19 +44,33 @@ jobs:
         uses: matlab-actions/run-command@v1
         with:
           command: openProject('${{ env.PROJECTNAME }}');, crs_controllerTestFile;
-      
-  package:
+      - name: Publish Test Results
+        uses: EnricoMi/Publish-unit-test-result-action/composite@v1
+        if: always()
+        with:
+          files: "./Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml"
+
+  build:
     runs-on: self-hosted
-    needs: [verify,build,testing]
+    needs: [verify,testing]
     steps:
-      - name: package artifacts
+      - name: Code Generation
         uses: matlab-actions/run-command@v1
         with:
-          command: openProject('${{ env.PROJECTNAME }}');, generateXMLFromLogs('crs_controller');, generateHTMLReport('crs_controller');
-      - name: Archive results
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ env.ARTIFACTS_NAME }}
-          path: |
-            ./Design/crs_controller/pipeline/analyze/**/*
-            ./Code/codegen/crs_controller_ert_rtw
+          command: openProject('${{ env.PROJECTNAME }}');, crs_controllerBuild;
+      
+  #package:
+  #  runs-on: self-hosted
+  #  needs: [verify,build,testing]
+  #  steps:
+  #    - name: package artifacts
+  #      uses: matlab-actions/run-command@v1
+  #      with:
+  #        command: openProject('${{ env.PROJECTNAME }}');, generateXMLFromLogs('crs_controller');, generateHTMLReport('crs_controller');
+  #    - name: Archive results
+  #      uses: actions/upload-artifact@v2
+  #      with:
+  #        name: ${{ env.ARTIFACTS_NAME }}
+  #        path: |
+  #          ./Design/crs_controller/pipeline/analyze/**/*
+  #          ./Code/codegen/crs_controller_ert_rtw
