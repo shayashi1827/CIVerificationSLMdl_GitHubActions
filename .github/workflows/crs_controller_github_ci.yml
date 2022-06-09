@@ -47,16 +47,16 @@ jobs:
         uses: matlab-actions/run-tests@v1
         with:
           select-by-folder: ./Design/crs_controller
-          test-results-junit: ./Code/Logs/crs_controllerTestFileLog.xml
-          test-results-pdf: ./Code/Logs/crs_controllerTestFileLog.pdf
-          test-results-simulink-test: ./Code/Logs/crs_controllerTestFileLog.mldatx
+          test-results-junit: ./Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml
+          test-results-pdf: ./Design/crs_controller/pipeline/analyze/testing/crs_controllerTestResults.pdf
+          test-results-simulink-test: ./Design/crs_controller/pipeline/analyze/testing/crs_controllerTestResults.mldatx
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
         if: always() # always run even if the previous step fails
         with:
           report_paths: './Design/crs_controller/pipeline/analyze/testing/crs_controllerJUnitFormatTestResults.xml'
-
-  build:
+  
+build:
     runs-on: self-hosted
     needs: [verify,testing]
     steps:
@@ -65,18 +65,18 @@ jobs:
         with:
           command: openProject('${{ env.PROJECTNAME }}');, crs_controllerBuild;
       
-  #package:
-  #  runs-on: self-hosted
-  #  needs: [verify,build,testing]
-  #  steps:
+  package:
+    runs-on: self-hosted
+    needs: [verify,build,testing]
+    steps:
   #    - name: package artifacts
   #      uses: matlab-actions/run-command@v1
   #      with:
   #        command: openProject('${{ env.PROJECTNAME }}');, generateXMLFromLogs('crs_controller');, generateHTMLReport('crs_controller');
-  #    - name: Archive results
-  #      uses: actions/upload-artifact@v2
-  #      with:
-  #        name: ${{ env.ARTIFACTS_NAME }}
-  #        path: |
-  #          ./Design/crs_controller/pipeline/analyze/**/*
-  #          ./Code/codegen/crs_controller_ert_rtw
+      - name: Archive results
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACTS_NAME }}
+          path: |
+            ./Design/crs_controller/pipeline/analyze/**/*
+            ./Code/codegen/crs_controller_ert_rtw
