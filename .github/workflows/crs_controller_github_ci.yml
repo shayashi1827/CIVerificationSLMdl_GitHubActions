@@ -1,7 +1,5 @@
-#Copyright 2022 The MathWorks, Inc.
-
+# Copyright 2022 The MathWorks, Inc.
 name: Model verification example for the crs_controller model
-
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push events but only for the main branch
@@ -69,11 +67,7 @@ build:
     runs-on: self-hosted
     needs: [verify,build,testing]
     steps:
-  #    - name: package artifacts
-  #      uses: matlab-actions/run-command@v1
-  #      with:
-  #        command: openProject('${{ env.PROJECTNAME }}');, generateXMLFromLogs('crs_controller');, generateHTMLReport('crs_controller');
-      - name: Archive results
+     - name: Archive results
         uses: actions/upload-artifact@v2
         with:
           name: ${{ env.ARTIFACTS_NAME }}
