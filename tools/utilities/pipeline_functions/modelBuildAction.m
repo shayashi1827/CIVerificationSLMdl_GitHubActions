@@ -24,8 +24,8 @@ classdef modelBuildAction
         end
         
         function build(obj)
-            cd(obj.cfg.CodeGenFolder);
-
+            cd(obj.cfg.CodeGenFolder)
+           
             load_system(obj.modelName)
             % Build            
             cs = getActiveConfigSet(obj.modelName);
@@ -36,7 +36,7 @@ classdef modelBuildAction
                 case 'rsim.tlc'
                     slbuild(obj.modelName);
                 case 'ert.tlc'
-                    rtwbuild(obj.modelName);
+                    rtwbuild(obj.modelName)
                 otherwise
                     % a log file for Summary Report in pipeline
                     load(fullfile('Code','logsPath.mat'),'path');
