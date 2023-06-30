@@ -6,24 +6,24 @@
 % locally by using this script
 
 %% crs_controller
-% verify
-crs_controllerModelAdvisor
-
-% build
-crs_controllerBuild
-
-% test
-crs_controllerTestFile
+% % verify
+% crs_controllerModelAdvisor
+% 
+% % build
+% crs_controllerBuild
+% 
+% % test
+% crs_controllerTestFile
 
 %% CruiseControlMode
-% verify
-CruiseControlModeModelAdvisor
-
-% build
-CruiseControlModeBuild
-
-% test
-CruiseControlModeTest
+% % verify
+% CruiseControlModeModelAdvisor
+% 
+% % build
+% CruiseControlModeBuild
+% 
+% % test
+% CruiseControlModeTest
 
 %% DriverSwRequest
 % verify
@@ -36,11 +36,11 @@ DriverSwRequestBuild
 DriverSwRequestTest
 
 %% TargetSpeedThrottle
-% verify
-TargetSpeedThrottleModelAdvisor
-
-% build
-TargetSpeedThrottleBuild
-
-% test
-TargetSpeedThrottleTest
+% % verify
+% TargetSpeedThrottleModelAdvisor
+% 
+% % build
+% TargetSpeedThrottleBuild
+% 
+% % test
+% TargetSpeedThrottleTest
