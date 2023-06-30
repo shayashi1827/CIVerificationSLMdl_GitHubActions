@@ -47,9 +47,10 @@ jobs:
     needs: [verify,testing]
     steps:
       - name: Code Generation
-        uses: matlab-actions/run-command@v1
-        with:
-          command: openProject('${{ env.PROJECTNAME }}');, DriverSwRequestBuild;
+        shell: "matlab -batch "openProject('CruiseControlExample.prj');, DriverSwRequestBuild;"
+#        uses: matlab-actions/run-command@v1
+#        with:
+#          command: openProject('${{ env.PROJECTNAME }}');, DriverSwRequestBuild;
       
   package:
     runs-on: self-hosted
