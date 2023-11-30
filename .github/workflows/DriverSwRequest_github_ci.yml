@@ -29,18 +29,18 @@ jobs:
     needs: [setup]
     steps:
       - name: Run ModelAdvisor
-        uses: matlab-actions/run-command@v1
-        with:
-          command: openProject('${{ env.PROJECTNAME }}');, DriverSwRequestModelAdvisor;
+        shell: cmd
+        run: |
+          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestModelAdvisor;
   
   testing:
     runs-on: self-hosted
     needs: [setup]
     steps:
       - name: Unit Test
-        uses: matlab-actions/run-command@v1
-        with:
-          command: openProject('${{ env.PROJECTNAME }}');, DriverSwRequestTest;
+        shell: cmd
+        run: |
+          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestTest;
   
   build:
     runs-on: self-hosted
@@ -49,10 +49,7 @@ jobs:
       - name: Code Generation
         shell: cmd
         run: |
-          matlab -batch "openProject('CruiseControlExample.prj');, DriverSwRequestBuild;
-#        uses: matlab-actions/run-command@v1
-#        with:
-#          command: openProject('${{ env.PROJECTNAME }}');, DriverSwRequestBuild;
+          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestBuild;
       
   package:
     runs-on: self-hosted
