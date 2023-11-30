@@ -31,7 +31,7 @@ jobs:
       - name: Run ModelAdvisor
         shell: cmd
         run: |
-          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestModelAdvisor;
+          matlab -batch "openProject('${{ env.PROJECTNAME }}');, DriverSwRequestModelAdvisor;
   
   testing:
     runs-on: self-hosted
@@ -40,7 +40,7 @@ jobs:
       - name: Unit Test
         shell: cmd
         run: |
-          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestTest;
+          matlab -batch "openProject('${{ env.PROJECTNAME }}');, DriverSwRequestTest;
   
   build:
     runs-on: self-hosted
@@ -49,7 +49,7 @@ jobs:
       - name: Code Generation
         shell: cmd
         run: |
-          matlab -batch "openProject('${{ env.ARTIFACTS_NAME }}');, DriverSwRequestBuild;
+          matlab -batch "openProject('${{ env.PROJECTNAME }}');, DriverSwRequestBuild;
       
   package:
     runs-on: self-hosted
